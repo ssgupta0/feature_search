@@ -25,6 +25,8 @@
 /* Begin PBXFileReference section */
 		9405431525F81A1B00056160 /* feature_search */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = feature_search; sourceTree = BUILT_PRODUCTS_DIR; };
 		9405431825F81A1B00056160 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		9405432125F83E4500056160 /* CS170_SMALLtestdata__75.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = CS170_SMALLtestdata__75.txt; path = ../../../CS170/feature_search/feature_search/CS170_SMALLtestdata__75.txt; sourceTree = "<group>"; };
+		9405432225F83E4500056160 /* CS170_largetestdata__26.txt */ = {isa = PBXFileReference; lastKnownFileType = text; name = CS170_largetestdata__26.txt; path = ../../../CS170/feature_search/feature_search/CS170_largetestdata__26.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,8 @@
 			isa = PBXGroup;
 			children = (
 				9405431825F81A1B00056160 /* main.cpp */,
+				9405432225F83E4500056160 /* CS170_largetestdata__26.txt */,
+				9405432125F83E4500056160 /* CS170_SMALLtestdata__75.txt */,
 			);
 			path = feature_search;
 			sourceTree = "<group>";
