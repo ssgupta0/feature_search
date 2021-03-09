@@ -8,21 +8,28 @@
 
 #include <iostream>
 #include <fstream>
+#include <vector>
 
 
-
-
+void feature_search() {
+    //for(int  i = 0; i < )
+}
 
 int main(int argc, const char * argv[]) {
 
     std::string input;
     
-    float lung;
     
-    float height;
-    float years;
-    float weight;
-    float cigs;
+    //lungs
+    
+    //height
+    //years
+    //weight
+    //cigs
+    
+    std::vector<std::vector<float>> data {
+        {},{},{},{},{}
+    };
     
     // open input file
     std::ifstream myfile("movieReviews.txt");
@@ -34,25 +41,25 @@ int main(int argc, const char * argv[]) {
     
     //parse through file input
     while (!myfile.eof()) {
-        myfile >> input;                //input value
-        lung = std::stof(input);      //convert to float
-        myfile.get();                   //get blank space
+        myfile >> input;                             //input value
+        data.at(0).push_back(std::stof(input));      //convert to float
+        myfile.get();                                //get blank space
         
-        myfile >> input;                //input value
-        height = std::stof(input);      //convert to float
-        myfile.get();                   //get blank space
+        myfile >> input;                             //input value
+        data.at(1).push_back(std::stof(input));      //convert to float
+        myfile.get();                                //get blank space
         
-        myfile >> input;                //input value
-        years = std::stof(input);      //convert to float
-        myfile.get();                   //get blank space
+        myfile >> input;                             //input value
+        data.at(2).push_back(std::stof(input));      //convert to float
+        myfile.get();                                //get blank space
         
-        myfile >> input;                //input value
-        weight = std::stof(input);      //convert to float
-        myfile.get();                   //get blank space
+        myfile >> input;                             //input value
+        data.at(3).push_back(std::stof(input));      //convert to float
+        myfile.get();                                //get blank space
         
-        myfile >> input;                //input value
-        cigs = std::stof(input);      //convert to float
-        myfile.get();                   //get blank space
+        myfile >> input;                             //input value
+        data.at(4).push_back(std::stof(input));      //convert to float
+        myfile.get();                                //get blank space
     }
     
     return 0;
