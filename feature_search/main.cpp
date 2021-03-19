@@ -20,18 +20,18 @@ void feature_search(std::vector<std::vector<float>> data) {
             std::cout << "On the 1st level of the search tree" << std::endl;
         }
         else {
-        std::cout << "On the " << i << "th level of the search tree" << std::endl;
+            std::cout << "On the " << i << "th level of the search tree" << std::endl;
         }
     }
 }
 
 int main(int argc, const char * argv[]) {
-
+    
     std::string input;
     
     std::string fileName = "CS170_SMALLtestdata__75.txt";
     //std::string fileName = "CS170_largetestdata__26.txt";
-
+    
     std::string line;
     std::vector<std::vector<float>> data;
     
@@ -44,14 +44,27 @@ int main(int argc, const char * argv[]) {
     }
     
     
+    
+    data.resize(100);
+    
     //parse through file input
     while (std::getline(myfile, line)) {
         std::istringstream iss(line);
         
         for(int i = 0; std::getline(iss, input, ' '); i++) {
-            data.at(i).push_back(std::stof(input));      //convert to float
+            if(input=="") {
+                i--;
+            }
+            else {
+                data.at(i).push_back(std::stof(input));      //convert to float
+            }
         }
     }
+    //Inputed into data<><>
+    
+    
+    
+    
     
     return 0;
 }
