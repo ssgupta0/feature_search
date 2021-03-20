@@ -25,6 +25,25 @@ bool notDup(std::vector<int> set, int k) {
     return true;
 }
 
+std::vector<int> removeFeature(std::vector<int> feat, std::vector<int> remove) {
+    std::vector<int> tmp;
+    bool inrem = false;
+    
+    for(int i = 0; i < feat.size(); i++) {
+        inrem = false;
+        for(int k = 0; k < remove.size(); k++) {
+            if(feat.at(i)==remove.at(k)) {
+                inrem=true;
+            }
+        }
+        if(!inrem) {
+            tmp.push_back(i+1);
+        }
+    }
+    
+    return tmp;
+}
+
 void printSet(std::vector<int> set) {
     
     if(set.size()==1) {
@@ -42,9 +61,23 @@ void printSet(std::vector<int> set) {
     
 }
 
-float findAccuracy(std::vector<std::vector<float>> data, std::vector<int> current_set_of_features, int feature_to_add) {
+void backwards(std::vector<std::vector<float>> &data, std::vector<int> current_set_of_features, int feature_to_remove) {
     
+    current_set_of_features.push_back(feature_to_remove);
+    
+    for(int i = 0; i < current_set_of_features.size(); i++) {
+        for(int k = 0; k < data.at(0).size(); k++) {
+            data.at( current_set_of_features.at(i) ).at(k) = 0;
+        }
+    }
+}
+
+void forwards(std::vector<std::vector<float>> &data, std::vector<int> current_set_of_features, int feature_to_add) {
     bool in_set = true;
+    
+    if(feature_to_add==0) {
+        return;
+    }
     
     for(int i = 1; i < data.size(); i++) {
         in_set = false;
@@ -66,9 +99,18 @@ float findAccuracy(std::vector<std::vector<float>> data, std::vector<int> curren
                 }
             }
         }
+        
     }
+}
+
+float findAccuracy(std::vector<std::vector<float>> data, std::vector<int> current_set_of_features, int feature_to_add, bool back) {
     
-    
+    if(!back) {
+        forwards(data, current_set_of_features, feature_to_add);
+    }
+    else {
+        backwards(data, current_set_of_features, feature_to_add);
+    }
     
     int number_correct = 0;
     
@@ -115,7 +157,7 @@ float findAccuracy(std::vector<std::vector<float>> data, std::vector<int> curren
 }
 //----------------------------
 
-void backward(std::vector<std::vector<float>> data) {
+void feature_search(std::vector<std::vector<float>> data, bool back) {
     std::vector<int> current_set_of_features;
     
     // current_set_of_features.resize(data.size()-1);
@@ -125,8 +167,19 @@ void backward(std::vector<std::vector<float>> data) {
     float final_accuracy = 0;
     std::vector<int> best_set;
     std::vector<int> tmp ;
+    std::vector<int> all ;
+    
+    accuracy = findAccuracy(data, all, 0, 0);
+    
+    std::cout << "\nDataset has " << data.size()-1 << " features (not inclusding class atribute), with " << data.at(0).size() << " instances." << std::endl;
+    std::cout << "\nRunning nearest neighbor with all " << data.size()-1 << " features, using \"leaving-one-out evaluation, I get an accuracy of \"" << accuracy*100 << "%" << std::endl;
+    
+    std::cout << "\nBeggining search." << std::endl;
 
     
+    for(int  i = 1; i <= data.size()-1; i++) {
+        all.push_back(i);
+    }
     for(int  i = 1; i < data.size()-1; i++) {
         if(i==1) {
             std::cout << "On the 1st level of the search tree" << std::endl;
@@ -148,16 +201,19 @@ void backward(std::vector<std::vector<float>> data) {
                 tmp = current_set_of_features;
                 tmp.push_back(k);
                 
-                std::cout << "--Using feature(s)";
+                if(back) {
+                    std::cout << "--Removing feature(s) ";
+                }
+                else {
+                    std::cout << "--Using feature(s) ";
+                }
                 printSet(tmp);
                 
+                accuracy = findAccuracy(data, current_set_of_features, k, back);    //k = number of rows?
                 
-                accuracy = findAccuracy(data, current_set_of_features, k);    //k = number of rows?
-                //accuracy = rand();  //accuracy = leave_out_cross_validation(data, current_set_of_features, k+1);
-
                 
                 std::cout << " accuracy is " << accuracy*100 << "%" << std::endl;
-
+                
                 
                 if(accuracy > best_accuracy) {
                     best_accuracy = accuracy;
@@ -172,99 +228,34 @@ void backward(std::vector<std::vector<float>> data) {
             best_set = current_set_of_features;
         }
         else {
-            std::cout << "Warning, previous sets had better accuracy of: " << final_accuracy*100 << "%" << std::endl;
+            std::cout << "\n**Warning, previous sets had better accuracy of: " << final_accuracy*100 << "%**" << std::endl;
         }
         //std::cout << "\nOn level " << i << " I added feature " << feature_to_add << " to current set" << std::endl;
+        
         std::cout << "\nFeature set ";
-        if(i==1) {
-            std::cout << feature_to_add;
+        if(back) {
+            tmp = all;
+            printSet(removeFeature(tmp, current_set_of_features)) ;
         }
         else {
-        printSet(tmp);
-        }
-        std::cout << " was best, accuracy is " << best_accuracy*100 << " %\n" << std::endl;
-    }
-    
-    std::cout << "\nBest accuracy was: " << final_accuracy << " on set: ";
-    printSet(best_set);
-    std::cout<<std::endl;
-    
-}
-
-//----------------------------
-
-void forward(std::vector<std::vector<float>> data) {
-    std::vector<int> current_set_of_features;
-    
-    // current_set_of_features.resize(data.size()-1);
-    
-    float accuracy = 0;
-    float best_accuracy = 0;
-    float final_accuracy = 0;
-    std::vector<int> best_set;
-    std::vector<int> tmp ;
-
-    
-    for(int  i = 1; i < data.size()-1; i++) {
-        if(i==1) {
-            std::cout << "On the 1st level of the search tree" << std::endl;
-        }
-        else {
-            std::cout << "On the " << i << "th level of the search tree" << std::endl;
-        }
-        //display level
-        
-        best_accuracy = 0;
-        int  feature_to_add = 0;
-        
-        for(int k = 1; k < data.size(); k++) {
-            
-            if(notDup(current_set_of_features, k)) {
-                
-                //std::cout << "--Considering adding the " << k << " feature" << std::endl;
-                
-                tmp = current_set_of_features;
-                tmp.push_back(k);
-                
-                std::cout << "--Using feature(s)";
+            if(i==1) {
+                std::cout << feature_to_add;
+            }
+            else {
                 printSet(tmp);
-                
-                
-                accuracy = findAccuracy(data, current_set_of_features, k);    //k = number of rows?
-                //accuracy = rand();  //accuracy = leave_out_cross_validation(data, current_set_of_features, k+1);
-
-                
-                std::cout << " accuracy is " << accuracy*100 << "%" << std::endl;
-
-                
-                if(accuracy > best_accuracy) {
-                    best_accuracy = accuracy;
-                    feature_to_add = k;
-                }
             }
         }
-        //look for main features
-        current_set_of_features.push_back(feature_to_add);
-        if(final_accuracy<best_accuracy) {
-            final_accuracy=best_accuracy;
-            best_set = current_set_of_features;
-        }
-        else {
-            std::cout << "Warning, previous sets had better accuracy of: " << final_accuracy*100 << "%" << std::endl;
-        }
-        //std::cout << "\nOn level " << i << " I added feature " << feature_to_add << " to current set" << std::endl;
-        std::cout << "\nFeature set ";
-        if(i==1) {
-            std::cout << feature_to_add;
-        }
-        else {
-        printSet(tmp);
-        }
-        std::cout << " was best, accuracy is " << best_accuracy*100 << " %\n" << std::endl;
+            std::cout << " was best, accuracy is " << best_accuracy*100 << " %\n" << std::endl;
+        
     }
     
     std::cout << "\nBest accuracy was: " << final_accuracy << " on set: ";
+    if(back) {
+        printSet(removeFeature(all, best_set)) ;
+    }
+    else {
     printSet(best_set);
+    }
     std::cout<<std::endl;
     
 }
@@ -273,15 +264,41 @@ void forward(std::vector<std::vector<float>> data) {
 
 int main(int argc, const char * argv[]) {
     
-    std::string input;
+    
+    //===================
+    
+    std::cout << "Welcome to Shashvat's Feature Selection Algorithm.\nType in the name of the file to test or choose a pre-selected one: " << std:: endl;
+    
+    
+    std::cout << "\n\t(1) CS170_SMALLtestdata__75.txt\n\t(2) CS170_largetestdata__26.txt" << std:: endl;
+    
+    std::string choice = "";
+    std::string file = "";
+    
+    std::cin >>choice;
+    
+    if(choice=="1") {
+        file = "CS170_SMALLtestdata__75.txt";
+    }
+    else if (choice == "2") {
+        file = "CS170_largetestdata__26.txt";
+    }
+    else {
+        file = choice;
+    }
+    
+    
+    //===================
+    
+    
     
     //std::string fileName = "CS170_SMALLtestdata__75.txt";
     //std::string fileName = "CS170_largetestdata__26.txt";
+    //std::string fileName = "CS170_small_special_testdata__97.txt";
     
-    std::string fileName = "CS170_small_special_testdata__97.txt";
-
+    std::string fileName = file;
+    
     std::string line;
-    std::vector<std::vector<float>> data;
     
     
     // open input file
@@ -292,8 +309,8 @@ int main(int argc, const char * argv[]) {
     }
     
     bool sz = true;
-    //data.resize(100);
-    
+    std::vector<std::vector<float>> data;
+    std::string input;
     //parse through file input
     while (std::getline(myfile, line)) {
         std::istringstream iss(line);
@@ -313,9 +330,21 @@ int main(int argc, const char * argv[]) {
     }
     //Inputed into data<><>
     
-    feature_search(data);
-    //std::cout << x < std::endl;
     
+    std::cout << "\nType the number of the algorithm you want to run.\n\n\t(1) Forward Selection\n\t(2) Backwards Elemination" << std::endl;
+    
+    std::cin >> choice;
+    
+    if(choice=="1") {
+        feature_search(data, false); //false for forwards
+    }
+    else if (choice == "2") {
+        feature_search(data, true); //true for backwards
+    }
+    else {
+        std::cout << "Unacceptable choice!"<< std::endl;
+        return -1;
+    }
     
     
     return 0;
