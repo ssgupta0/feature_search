@@ -228,7 +228,7 @@ void feature_search(std::vector<std::vector<float>> data, bool back) {
             best_set = current_set_of_features;
         }
         else {
-            std::cout << "\n**Warning, previous sets had better accuracy of: " << final_accuracy*100 << "%**" << std::endl;
+            std::cout << "\n**Warning, previous set(s) had better accuracy of: " << final_accuracy*100 << "%**" << std::endl;
         }
         //std::cout << "\nOn level " << i << " I added feature " << feature_to_add << " to current set" << std::endl;
         
@@ -239,10 +239,10 @@ void feature_search(std::vector<std::vector<float>> data, bool back) {
         }
         else {
             if(i==1) {
-                std::cout << feature_to_add;
+                std::cout  << "{" << feature_to_add << "}";
             }
             else {
-                printSet(tmp);
+                printSet(current_set_of_features);
             }
         }
             std::cout << " was best, accuracy is " << best_accuracy*100 << " %\n" << std::endl;
