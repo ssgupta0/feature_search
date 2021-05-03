@@ -25,8 +25,7 @@ Backwards Elimination uses a very similar principle as forwards selection, but i
 Small data
 
 
-Figure 2: Accuracy of increasingly large subsets of features discovered by forwards selection on small dataset
-
+![Image 2](https://github.com/ssgupta0/feature_search/blob/master/figure2.png)
 
 At the beginning of the search, we have no features, this the empty set {}. This is the default rate of our set: 77%. Adding 9 increases the accuracy of our classes to 83.3%. Adding 7 to our subset so {9,7}, once again increases our accuracy to 96.7%, but when we add 10 for {9,7,10}, our accuracy goes down to 94.7%. We parse through this incase of a local maxima, but in the end our best features were 9 and 7 as the best subset was {9,7} with accuracy 96.7%.
 
@@ -35,8 +34,7 @@ At the beginning of the search, we have no features, this the empty set {}. This
 
 Next in figure 3, we attempt backwards elimination on the same subset to see how our algorithms compare.
 
-Figure 3: Accuracy of increasingly small subsets of features discovered by forwards selection on small dataset
-
+![Image 3](https://github.com/ssgupta0/feature_search/blob/master/figure3.png)
 
 At the beginning of the search, we have all features, this the full set {All}. This is the default rate of our set: 77%. Removing 3 increases the accuracy of our classes to 79.0%. We gradually remove more and more features until we are at set {1,9,7}, with accuracy 92.3%. We remove 1 for {9,7} and get a higher accuracy of 96.7%, but when we remove 7 for {9}, our accuracy goes down to 83.3%. 
 
@@ -46,8 +44,7 @@ Although forwards selection and backwards elimination resulted in the same final
 Large data
 
 
-Figure 4: Accuracy of increasingly large subsets of features discovered by forwards selection on large dataset
-
+![Image 4](https://github.com/ssgupta0/feature_search/blob/master/figure4.png)
 
 At the beginning of the search, we have no features, this the empty set {}. This is the default rate of our set: 67%. Adding 48 increases the accuracy of our classes to 86%. Adding 54 to our subset so {48,54}, once again increases our accuracy to 94.2%, but when we add any other, our accuracy goes down. We parse through this incase of a local maxima, but in the end our best features were 48 and 54 as the best subset was {48,54} with accuracy 94.2%.
 
