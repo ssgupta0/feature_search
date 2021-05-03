@@ -1,9 +1,9 @@
 # feature_search
-CS170 project 2
+
 
 
 Introduction
-This project uses a wrapper of a feature search around K-folding forwards search and backwards elimination of a nearest neighbor algorithm to find which feature sets are most applicable to determining what class one of the given objects is.
+This project uses a wrapper of a feature search around K-folding forwards search and backwards elimination of a nearest neighbor algorithm to find which feature sets are most applicable to determining what class one of the given objects is. Input files must have classification on left most collumn, and each feature set for n collumns.
 
 
 
