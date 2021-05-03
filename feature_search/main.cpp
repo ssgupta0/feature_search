@@ -14,7 +14,7 @@
 #include <sstream>
 #include <cmath>
 
-#define inf 999999999999;
+#define inf 9999999;
 
 bool notDup(std::vector<int> set, int k) {
     for(int i = 0; i < set.size(); i++) {
