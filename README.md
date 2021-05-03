@@ -7,7 +7,7 @@ This project uses a wrapper of a feature search around K-folding forwards search
 
 
 
-https://github.com/ssgupta0/feature_search/blob/master/Figure1.png
+![Image 1](https://github.com/ssgupta0/feature_search/blob/master/Figure1.png)
 
 Overview of Algorithm
 The text file inputted into the program uses the first column to depict what class the objects are, and uses the next n columns for n features that it has. An analogy to this problem could be if class were binary gender and features were height at weight. Given that an object is 6’2” and 200lb, we can likely say that they are a male as there was also a 6’3” 215lb male. This is fundamentally what our program attempts to do. It checks the accuracy of several combinations of features of an object by checking how often another object of similar features were of the same class ie. the nearest neighbor algorithm.
